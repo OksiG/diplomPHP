@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать новое задание</title>
+    <style type="text/css">
+        input {
+            display: block;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="./newTask.php" method="post">
+    <div class="form-group">
+        <label class="select-group" name="translator">
+            <span class="select-label">Ответственный:</span>
+            <select class="select">
+                <option value="moscow" selected>Не назначать</option>
+                <option value="moscow">Сидорова Сидора</option>
+                <option value="st-petersburg">Петрович Петр</option>
+                <option value="kazan">Иванов Иван</option>
+            </select>
+        </label>
+        <label class="select-group">
+            <span class="select-label">Клиент:</span>
+            <select class="select">
+                <option value="moscow" selected>ООО "Роман и командные практики"</option>
+                <option value="moscow">ИП Соколов А.И.</option>
+                <option value="st-petersburg">ООО "Перышко"</option>
+                <option value="kazan">ИП Чайник П.С.</option>
+            </select>
+        </label>
+    </div>
+    <div class="form-group">
+        <label class="field-group">
+            <span class="field-label">Напишите текст вашего сообщения</span>
+            <textarea class="field textarea" placeholder="Текст для перевода" required></textarea>
+        </label>
+    </div>
+    <div class="form-group form-actions">
+        <button class="button button-clear" name="done" type="reset">Done</button>
+        <button class="button button-submit">Reject</button>
+        <button class="button button-submit">Save</button>
+    </div>
+    </form>
+</body>
+</html>
