@@ -12,14 +12,14 @@ function checkLogin($users)
 {
     global $email;
     global $password;
+    global $users;
 
     if (array_key_exists($email, $users)) {
         if ($users[$email] == $password) {
             if ($email == 'manager@gmail.com') {
-                header('Location: mainManager.html', true);
+                header('Location: /interfaceManager/mainManager.php', true);
                 exit();
             }
-            echo 'Вы успешно вошли в систему!';
             return true;
         } else {
             echo 'Неверно введен пароль!';

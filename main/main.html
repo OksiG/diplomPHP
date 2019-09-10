@@ -81,25 +81,25 @@
     </style>
 </head>
 <body>
-<form action="main.php" method="post">
-    <main class="authorization">
-        <div class="entrance">
-            <div class="entrance_header">
-                <h1>для начала работы необходимо авторизоваться</h1>
+    <form action="main.php" method="post">
+        <main class="authorization">
+            <div class="entrance">
+                <div class="entrance_header">
+                    <h1>для начала работы необходимо авторизоваться</h1>
+                </div>
+                <label class="entrance_field">
+                    <span class="field_text">введите ваш email</span>
+                    <input class="email field" name="email" type="email" placeholder="например: 12345@email.ru" required>
+                </label>
+                <label class="entrance_field">
+                    <span class="field_text">введите ваш пароль</span>
+                    <input class="password field" name="password" type="password" placeholder="используйте надежный пароль, не менее 6 символов" required>
+                </label>
+                <div class="entrance_button">
+                    <button class="button button-enter">войти</button>
+                </div>
             </div>
-            <label class="entrance_field">
-                <span class="field_text">введите ваш email</span>
-                <input class="email field" name="email" type="email" placeholder="например: 12345@email.ru" required>
-            </label>
-            <label class="entrance_field">
-                <span class="field_text">введите ваш пароль</span>
-                <input class="password field" name="password" type="password" placeholder="используйте надежный пароль, не менее 6 символов" required>
-            </label>
-            <div class="entrance_button">
-                <button class="button button-enter">войти</button>
-            </div>
-        </div>
-    </main>
-</form>
+        </main>
+    </form>
 </body>
 </html>
