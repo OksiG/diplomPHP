@@ -1,4 +1,6 @@
 <?php
+require_once 'JsonFileAccessModel.php';
+
 $translator = $_POST['translator'];
 $client = $_POST['client'];
 $originalLanguage = $_POST['originalLanguage'];
@@ -19,6 +21,9 @@ $task = ['status' => 'new',
     'text' => $textForTranslate,
     'deadline' => $deadline
 ];
+
+__construct('newtask');
+
 
 ?>
 
