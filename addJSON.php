@@ -1,3 +1,0 @@
-<?php
-$text = '{ "text": text}';
-

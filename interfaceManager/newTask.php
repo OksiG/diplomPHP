@@ -1,29 +1,51 @@
 <?php
-require_once 'JsonFileAccessModel.php';
 
-$translator = $_POST['translator'];
-$client = $_POST['client'];
-$originalLanguage = $_POST['originalLanguage'];
-$translateLanguage = $_POST['translateLanguage'];
-$textForTranslate = $_POST['text'];
-$deadline = $_POST['deadline'];
-
-if ($_GET["new"] === true) {
+if ($_GET['new'] === true) {
     header('Location: /interfaceManager/newTask.php', true);
     exit();
 }
 
-$task = ['status' => 'new',
-    'translator' => $translator,
-    'client' => $client,
-    'originalLanguage' => $originalLanguageForm,
-    'translateLanguage' => $translateLanguageForm,
-    'text' => $textForTranslate,
-    'deadline' => $deadline
-];
+if (isset($_GET['save'])) {
+    //$task = $tasksList->getTask($_GET['save']);
+    include 'saveTask.php';
+} elseif (isset($_GET['delete'])) {
+    include 'delete_task.php';
+} elseif (isset($_GET['edit'])) {
+    include 'edit_task.php';
+}
 
-__construct('newtask');
+$jsonFileAccessModel = new JsonFileAccessModel('tasks');
+$tasks = json_decode($jsonFileAccessModel->read(), true);
+$idList = array();
+foreach ($tasks as $value) {
+    if (array_key_exists('id', $value)) $idList[] = $value['id'];
+}
+$next_id = max($idList) + 1;
+$translation_lang = array();
+$original_text_preview = mb_substr($_POST['text'], 0, 420);
+if (isset($_POST['translateLanguage'])) {
+    $translation_lang = $_POST['translateLanguage'];
+}
+$task = array(
+    'id' => $next_id,
+    'status' => 'new',
+    'client' => $_POST['client'],
+    'translator' => $_POST['translator'],
+    'originalLanguage' => $_POST['originalLanguage'],
+    'translateLanguage' => $_POST['translateLanguage'],
+    'deadline' => $_POST['deadline'],
+    'original_text_preview' => $original_text_preview,
+    'text' => $next_id . '.json'
+);
 
+$tasks[] = $task;
+$json_tasks = json_encode($tasks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+$jsonFileAccessModel->write($json_tasks);
+/* Создаем файл с оригиналом текста задания */
+$jsonFileAccessModel2 = new JsonFileAccessModel($next_id, $_POST['originalLanguage']);
+$jsonFileAccessModel2->write($_POST['text']);
+
+header('Location: index.php');
 
 ?>
 
@@ -253,7 +275,7 @@ __construct('newtask');
             </select>
         </label>
         <label class="select-group">
-            <span class="select-label">Клиент:</span>
+            <span class="select-label" name="client">Клиент:</span>
             <select class="select select-customer">
                 <option value="roman-co" selected>ООО "Роман и командные практики"</option>
                 <option value="sokolov">ИП Соколов А.И.</option>
@@ -263,7 +285,7 @@ __construct('newtask');
         </label>
     </div>
     <div class="select-language">
-        <span class="language-note">язык оригинала</span>
+        <span class="language-note" name="originalLanguage">язык оригинала</span>
         <div class="language-original">
             <label class="language-original-radio">
                 <input type="radio" name="radio-group-original">
@@ -290,7 +312,7 @@ __construct('newtask');
                 <span class="original-radio">Испанский</span>
             </label>
         </div>
-        <span class="language-note">язык перевода</span>
+        <span class="language-note" name="translateLanguage">язык перевода</span>
         <div class="language-original">
             <label class="language-original-radio">
                 <input type="radio" name="radio-group-translate">
@@ -319,19 +341,19 @@ __construct('newtask');
         </div>
     </div>
     <div class="form-group">
-        <label class="field-group">
+        <label class="field-group" name="text">
             <span class="field-label">Напишите текст вашего сообщения</span>
             <textarea class="field textarea" placeholder="Текст для перевода" required></textarea>
         </label>
     </div>
     <div class="form-group form-actions">
-        <a type="button" class="new-button" href="newTask.php?new=true">done</a>
-        <a type="button" class="button" href="newTask.php?new=true">Reject</a>
+        <?php echo '<a class="new-button" href="newTask.php?done=' . $value . '">done</a>'; ?>
+        <?php echo '<a class="button" href="newTask.php?reject=' . $value . '">Reject</a>'; ?>
         <label class="date-calendar">
             <span class="date">крайний срок:</span>
             <input type="date" class="calendar">
         </label>
-        <a type="button" class="new-button" href="newTask.php?new=true">save</a>
+        <?php echo '<a class="new-button" href="newTask.php?save=' . $value . '">Сохранить</a>'; ?>
     </div>
 </form>
 </body>
